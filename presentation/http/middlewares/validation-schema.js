@@ -8,13 +8,13 @@ const REASON_REQUIRED_MESSAGE = 'is required'
 const humanReadableErrors = errors =>
   errors.map(error => {
     const {
-      dataPath,
+      instancePath,
       message,
       keyword: reason,
       params: { missingProperty }
     } = error
 
-    const path = (reason === REASON_REQUIRED ? `${dataPath}.${missingProperty}` : dataPath).replace(
+    const path = (reason === REASON_REQUIRED ? `${instancePath}.${missingProperty}` : instancePath).replace(
       /^\./,
       ''
     )

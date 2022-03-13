@@ -1,4 +1,3 @@
-import partialResponse from "express-partial-response";
 import routes from "./routes";
 import database from "../../infrastructure/database";
 
@@ -27,8 +26,6 @@ export default async (app, config) => {
    * Services
    */
   const userService = new UserService(userRepository);
-
-  app.use(partialResponse());
 
   app.post("/user", routes.user.create.factory(userService));
 };

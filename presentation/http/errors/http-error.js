@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import Error from "./error";
 
 class HttpError extends Error {

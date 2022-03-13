@@ -19,7 +19,8 @@ const shouldDisplayErrorStack = environment => environment !== "production";
  */
 const factory =
   (environment = "development") =>
-  (err, req, res) => {
+  // eslint-disable-next-line no-unused-vars
+  (err, req, res, next) => {
     const { code, message, status } = err;
 
     const validations = shouldDisplayValidationErrors(err) ? err.validations : undefined;

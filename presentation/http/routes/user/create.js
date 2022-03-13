@@ -1,7 +1,9 @@
-// const rescue = require("express-rescue");
 import rescue from "express-rescue";
 import middlewares from "../../middlewares";
 import { NotFoundError } from "../../../../domain/user";
+import Errors from "../../errors";
+
+const { HttpErrors } = Errors;
 
 const validate = middlewares.validationSchema.factory;
 
@@ -28,7 +30,7 @@ const factory = service => [
   }),
   (err, req, res, next) => {
     if (err instanceof NotFoundError) {
-      return next(new NotFoundError({ message: err.message }));
+      return next(new HttpErrors.NotFound({ message: err.message }));
     }
 
     return next(err);
