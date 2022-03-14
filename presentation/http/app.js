@@ -27,5 +27,9 @@ export default async (app, config) => {
    */
   const userService = new UserService(userRepository);
 
+  app.get("/user", routes.user.search.factory(userService));
   app.post("/user", routes.user.create.factory(userService));
+  app.get("/user/:id", routes.user.find.factory(userService));
+  app.patch("/user/:id", routes.user.update.factory(userService));
+  app.delete("/user/:id", routes.user.delete.factory(userService));
 };

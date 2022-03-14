@@ -1,6 +1,6 @@
 import rescue from "express-rescue";
 import middlewares from "../../middlewares";
-import { NotFoundError } from "../../../../domain/user";
+import { NotFoundError, EmailNotAvailableError } from "../../../../domain/user";
 import Errors from "../../errors";
 
 const { HttpErrors } = Errors;
@@ -29,6 +29,10 @@ const factory = service => [
     res.status(201).json({ id });
   }),
   (err, req, res, next) => {
+    if (err instanceof EmailNotAvailableError) {
+      return next(new HttpErrors.Conflict({ message: err.message }));
+    }
+
     if (err instanceof NotFoundError) {
       return next(new HttpErrors.NotFound({ message: err.message }));
     }
