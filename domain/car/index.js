@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import NotFoundError from "./errors/not-found";
-import EmailNotAvailableError from "./errors/email-not-available";
 
 const { Schema } = mongoose;
 
@@ -11,27 +10,26 @@ const options = {
   },
 };
 
-const userSchema = new Schema(
+const carSchema = new Schema(
   {
-    name: {
+    model: {
       type: String,
       required: true,
     },
-    email: {
+    price: {
+      type: Number,
+      required: true,
+    },
+    photo: {
       type: String,
       required: true,
     },
-    salt: {
+    description: {
       type: String,
-      required: true,
-    },
-    password: {
-      type: String,
-      required: true,
     },
   },
   options
 );
 
-export default userSchema;
-export { NotFoundError, EmailNotAvailableError };
+export default carSchema;
+export { NotFoundError };
