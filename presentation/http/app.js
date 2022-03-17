@@ -41,6 +41,7 @@ export default async (app, config) => {
 
   app.post("/auth/login", routes.auth.authenticate.factory(authService));
 
+  app.get("/user/me", authJwt, routes.auth.me.factory(userService));
   app.get("/user", authJwt, routes.user.search.factory(userService));
   app.post("/user", routes.user.create.factory(userService));
   app.get("/user/:id", authJwt, routes.user.find.factory(userService));

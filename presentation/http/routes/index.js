@@ -15,5 +15,6 @@ export default {
   },
   auth: {
     authenticate: (await import("./auth/authenticate")).default,
+    me: (await import("./auth/me")).default,
   },
 };
