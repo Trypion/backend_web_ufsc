@@ -1,6 +1,7 @@
 import routes from "./routes";
 import database from "../../infrastructure/database";
 import Jwt from "../../lib/jwt";
+import AuthJwt from "./middlewares/jwt";
 
 /**
  * Domain
@@ -23,7 +24,9 @@ import AuthService from "../../services/auth";
 
 export default async (app, config) => {
   const jwt = Jwt.factory(config.jwt);
+  const authJwt = AuthJwt.factory({ audience: config.auth.audience }, jwt);
   await database.factory(config.database);
+
   /**
    * Repositories
    */
@@ -34,15 +37,15 @@ export default async (app, config) => {
    */
   const userService = new UserService(userRepository);
   const carService = new CarService(carRepository);
-  const authService = new AuthService(userRepository, jwt);
+  const authService = new AuthService(userRepository, jwt, config.auth);
 
   app.post("/auth/login", routes.auth.authenticate.factory(authService));
 
-  app.get("/user", routes.user.search.factory(userService));
+  app.get("/user", authJwt, routes.user.search.factory(userService));
   app.post("/user", routes.user.create.factory(userService));
-  app.get("/user/:id", routes.user.find.factory(userService));
-  app.patch("/user/:id", routes.user.update.factory(userService));
-  app.delete("/user/:id", routes.user.delete.factory(userService));
+  app.get("/user/:id", authJwt, routes.user.find.factory(userService));
+  app.patch("/user/:id", authJwt, routes.user.update.factory(userService));
+  app.delete("/user/:id", authJwt, routes.user.delete.factory(userService));
 
   app.get("/car", routes.car.search.factory(carService));
   app.post("/car", routes.car.create.factory(carService));

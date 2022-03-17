@@ -22,4 +22,7 @@ export default {
     ttl: "1h",
     privateKey: process.env.JWT_PRIVATE_KEY || "",
   },
+  auth: {
+    audience: "api.car-rental.com",
+  },
 };

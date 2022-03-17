@@ -1,9 +1,10 @@
 import bcrypt from "bcrypt";
 
 class AuthService {
-  constructor(UserRepository, jwt) {
+  constructor(UserRepository, jwt, { audience }) {
     this.UserRepository = UserRepository;
     this.jwt = jwt;
+    this.audience = audience;
   }
 
   async login({ email, password }) {
@@ -26,9 +27,8 @@ class AuthService {
     };
 
     const urn = `urn:user:${user.id}`;
-    const audience = `urn:app:car-rental`;
 
-    const token = this.jwt.sign(urn, payload, audience);
+    const token = this.jwt.sign(urn, payload, this.audience);
 
     return { token };
   }
