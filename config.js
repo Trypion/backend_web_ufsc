@@ -17,4 +17,9 @@ export default {
   morgan: {
     format: ":method :url :status :: :response-time ms :: :res[content-length]",
   },
+  jwt: {
+    issuer: "api.car-rental.com",
+    ttl: "1h",
+    privateKey: process.env.JWT_PRIVATE_KEY || "",
+  },
 };

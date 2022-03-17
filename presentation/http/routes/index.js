@@ -13,4 +13,7 @@ export default {
     delete: (await import("./car/delete")).default,
     search: (await import("./car/search")).default,
   },
+  auth: {
+    authenticate: (await import("./auth/authenticate")).default,
+  },
 };

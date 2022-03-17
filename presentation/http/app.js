@@ -1,5 +1,6 @@
 import routes from "./routes";
 import database from "../../infrastructure/database";
+import Jwt from "../../lib/jwt";
 
 /**
  * Domain
@@ -18,19 +19,24 @@ import CarRepository from "../../infrastructure/repositories/car";
  */
 import UserService from "../../services/user";
 import CarService from "../../services/car";
+import AuthService from "../../services/auth";
 
 export default async (app, config) => {
+  const jwt = Jwt.factory(config.jwt);
   await database.factory(config.database);
   /**
    * Repositories
    */
   const userRepository = new UserRepository(User);
-  const carRepository = new CarRepository(Car);  
+  const carRepository = new CarRepository(Car);
   /**
    * Services
    */
   const userService = new UserService(userRepository);
   const carService = new CarService(carRepository);
+  const authService = new AuthService(userRepository, jwt);
+
+  app.post("/auth/login", routes.auth.authenticate.factory(authService));
 
   app.get("/user", routes.user.search.factory(userService));
   app.post("/user", routes.user.create.factory(userService));

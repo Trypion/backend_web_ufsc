@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import { NotFoundError, EmailNotAvailableError } from "../domain/user";
 
 class UserService {
@@ -12,7 +13,10 @@ class UserService {
       throw new EmailNotAvailableError(`User with email ${email} already exists`);
     }
 
-    const user = await this.UserRepository.create({ name, email, password });
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
+
+    const user = await this.UserRepository.create({ name, email, salt, password: hash });
 
     return user;
   }
@@ -34,7 +38,7 @@ class UserService {
       throw new NotFoundError(`User not found`);
     }
 
-    return (({ password, ...persistedUser }) => persistedUser)(user.toJSON());
+    return (({ password, salt, ...persistedUser }) => persistedUser)(user.toJSON());
   }
 
   async search(filters, pagination) {
@@ -47,7 +51,9 @@ class UserService {
       sortDirection
     );
 
-    return { users, count, range, total };
+    const cleanUsers = users.map(({ password, salt, ...user }) => user);
+
+    return { cleanUsers, count, range, total };
   }
 
   async delete({ id }) {

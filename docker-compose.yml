@@ -5,17 +5,17 @@ services:
       - "27017:27017"
     volumes:
       - mongodb:/data/db
-  
+
   backend:
     build: ./
     ports:
       - "5000:5000"
     environment:
-      - MONGODB_URL=mongodb://mongodb:27017/
-      - MONGODB_DBNAME=pinga
+      MONGODB_URL: mongodb://mongodb:27017/
+      MONGODB_DBNAME: pinga
+      JWT_PRIVATE_KEY: "secret"
     depends_on:
       - mongodb
 
 volumes:
   mongodb:
-
