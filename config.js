@@ -25,4 +25,7 @@ export default {
   auth: {
     audience: "api.car-rental.com",
   },
+  environment: {
+    env: process.env.APP_ENVIRONMENT || "development"
+  }
 };
