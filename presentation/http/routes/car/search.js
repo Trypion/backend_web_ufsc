@@ -54,7 +54,7 @@ const factory = service => [
   rescue(async (req, res) => {
     const { page, size, sortBy, sortDirection, ...filters } = req.query;
 
-    const { cars, count, range, total } = await service.search(filters, {
+    const { documents, count, range, total } = await service.search(filters, {
       page,
       size,
       sortBy,
@@ -67,7 +67,7 @@ const factory = service => [
       res.append("x-content-range", format("results %s-%s/%s", range.from, range.to, total));
     }
 
-    res.status(status).json(cars);
+    res.status(status).json(documents);
   }),
 ];
 
